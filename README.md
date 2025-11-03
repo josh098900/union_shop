@@ -6,7 +6,7 @@ This repository contains the coursework project for students enrolled in the **P
 
 The Student Union has an e-commerce website, which you can access via this link: [https://shop.upsu.net](https://shop.upsu.net)
 
-In short, your task is to recreate the same website using Flutter. You must not start from scratch, as this repository provides an incomplete Flutter implementation of the Student Union site that you must build upon. [The getting started section of this document](#getting-started) will explain more. Once you have completed the application, you will submit the link to your forked repository on Moodle for assessment and demonstrate your application in a practical session. See the [submission](#submission) and [demonstration](#demonstration) sections for more information.
+In short, your task is to recreate the same website using Flutter. You must not start from scratch, as you need to begin by forking the GitHub repository that contains the incomplete code. [The getting started section of this document](#getting-started) will explain more. Once you have completed the application, you will submit the link to your forked repository on Moodle for assessment and demonstrate your application in a practical session. See the [submission](#submission) and [demonstration](#demonstration) sections for more information.
 
 ⚠️ The UPSU.net link on the navbar of the union website is a link to an external site. This is not part of the application that you need to develop. So ignore the link highlighted below:
 
@@ -67,7 +67,7 @@ For detailed step-by-step instructions, refer to [Worksheet 1 — Introduction t
 
 ### Fork the Repository
 
-Go to the repository containing the code for the coursework and click on the fork button as shown in the screenshot: [https://github.com/manighahrmani/union_shop/fork](https://github.com/manighahrmani/union_shop/fork) (Alternatively, just use this link: [https://github.com/manighahrmani/union_shop/fork](https://github.com/manighahrmani/union_shop/fork))
+Go to the repository containing the code for the coursework and click on the fork button as shown in the screenshot: [https://github.com/manighahrmani/union_shop/fork](https://github.com/manighahrmani/union_shop/fork) (Alternatively, just use this link: [https://github.com/manighahrmani/union_shop/fork](https://github.com/manighahrmani/union_shop/fork).)
 
 ![Fork Button](https://raw.githubusercontent.com/manighahrmani/sandwich_shop/refs/heads/main/images/screenshot_fork_button.png)
 
@@ -100,7 +100,7 @@ flutter pub get
 
 ### Run the Application
 
-This application is primarily designed to run on **web** and should be viewed in **mobile view** using browser developer tools. We recommend using Google Chrome.
+This application is primarily designed to run on the **web** and should be viewed in **mobile view** using your browser's developer tools. We recommend using Google Chrome.
 
 Select Chrome as the target device and run the application either from the `main.dart` file or by entering the following command in the terminal:
 
@@ -118,12 +118,14 @@ From the Dimensions menu, select a mobile device preset (e.g., iPhone 12 Pro, Pi
 
 ## Marking Criteria
 
-This assessment is worth 55% of the marks for the Flutter Course (the remaining 45% comes from the weekly sign-offs). The mark for the assessment is divided into two components:
+This assessment is worth 55% of the marks for the module's assessment item 1 (the remaining 45% comes from the weekly sign-offs). The mark for the assessment is divided into two components:
 
-- **[Application (30%)](#application)**: Demonstrated through a live demo during practical sessions
+- **[Application (functionality) (30%)](#application)**: Demonstrated through a live demo during practical
 - **[Software Development Practices (25%)](#software-development-practices)**: Assessed through your repository
 
-For info on the overall course assessment structure, visit the [Flutter Course homepage](https://manighahrmani.github.io/sandwich_shop/).
+⚠️ You will only receive marks if you **both** attend a practical session for the demo **and** submit the link to your forked repository on Moodle before the deadline. Failure to do either will result in a mark of 0 for the entire coursework.
+
+For info on the overall assessment structure, visit the [Flutter Course homepage](https://manighahrmani.github.io/sandwich_shop/).
 
 ### Application
 
@@ -179,11 +181,11 @@ The table below outlines the aspects that will be evaluated and the mark (from t
 | Aspect | Description | Marks (%) |
 |--------|-------------|-----------|
 | Git | Regular, small, meaningful commits* to your repository throughout development; clear commit messages | 8% |
-| README | A comprehensive, well-formatted and accurate README file* | 5% |
-| Testing | Tests covering all or almost all of the application; passing tests; evidence of TDD* | 6% |
+| README | A comprehensive, well-formatted and accurate README file* (delete the current README file first) | 5% |
+| Testing | Tests covering all or almost all of the application; passing tests | 6% |
 | External Services* | Integration and utilization of cloud services | 6% |
 
-⚠️ You may not be awarded the 25% software development practices mark if your code has problems. Your code must be properly formatted and free from errors, warnings, or suggestions. Make sure your codebase is also well-structured, refactored and relatively free of repetition. Your code must be your own work (you need to understand it). **Plagiarised code** (e.g., commits showing large chunks of code copied over, especially from other students) will be penalised according to the University’s academic misconduct policy and you be awarded 0 marks for the entire coursework.
+⚠️ You may not be awarded the 25% software development practices mark if your code has problems or poor quality. Your code must be properly formatted and free from errors, warnings, or suggestions. Make sure your codebase is also well-structured, refactored and relatively free of repetition too. Your code must be your own work (you need to understand it). **Plagiarised code** (e.g., commits showing large chunks of code copied over, especially from other students) will be penalised according to the University’s academic misconduct policy, and you be awarded 0 marks for the entire coursework.
 
 Below are some explanations for the terminology used in the table:
 
@@ -191,9 +193,7 @@ Below are some explanations for the terminology used in the table:
 
 ***README**: Refer to [worksheet 4](https://manighahrmani.github.io/sandwich_shop/worksheet-4.html#writing-a-readme) for guidance on writing a good README file.
 
-***TDD** stands for Test-Driven Development. It is a software development approach where tests are written before the actual code implementation. To get the mark for TDD, you need have written tests before implementing the corresponding features. Ensure that your commit history reflects this practice.
-
-***External Services** refer to third-party cloud services like Firebase or Azure that your application integrates with. This could include services like user authentication, database, or hosting the application live on web. To get marks for this, you must integrate at **least two** separate external services. You are only awarded marks if your README documents this integration and explains how it is used in your application (e.g., provide a live link to the website if you have hosted it).
+***External Services** refer to third-party cloud services like Firebase or Azure that your application integrates with. This could include services like user authentication, database, or hosting the application live on the web. To get marks for this, you must integrate at **least two** separate external services. You are only awarded marks if your README documents this integration and explains how it is used in your application (e.g., provide a live link to the website if you have hosted it).
 
 ## Submission
 
@@ -207,7 +207,7 @@ Open the On time or the Late/Extenuating Circumstances submission link and click
 
 Make sure the repository is public. Check to see if it opens in an incognito/private window (you should not get a 404 error).
 
-⚠️ You can edit the link before the deadline, but do not edit the repository (do not make new commits) after the deadline. I will label your submission as late if you do this.
+⚠️ You can edit the link itself before the deadline, but do not edit the repository (do not make new commits) after the deadline. I will label your submission as late if you do this.
 
 ## Demonstration
 
@@ -219,7 +219,7 @@ During the demo, you will have **up to 10 minutes** to demonstrate your applicat
 
 ## Project Structure
 
-This starter repository that you have forked provides a minimal skeletal structure with:
+This starter repository that you will fork provides a minimal skeletal structure with:
 
 - **Homepage** (`lib/main.dart`): A basic homepage
 - **Product Page** (`lib/product_page.dart`): A single product page
@@ -239,7 +239,7 @@ union_shop/
 └── README.md               # This file
 ```
 
-Note that this is the initial structure. You are of course expected to create additional files and directories as needed to complete the coursework. You can also reorganize the project structure as you see fit.
+Note that this is the initial structure. You are expected to create additional files and directories as needed to complete the coursework. You can also reorganize the project structure as you see fit.
 
 ## Help with Coursework
 
@@ -251,7 +251,7 @@ If you are facing external extenuating circumstances that are affecting your abi
 
 ### Resources
 
-The worksheets listed on [the homepage](https://manighahrmani.github.io/sandwich_shop/) are your primary learning resource for Flutter development. Work through these worksheets systematically as they provide the foundation you need to complete the coursework successfully. You must refrain from using other online resources such as Stack Overflow, YouTube tutorials, or other websites for this coursework as they may contain outdated or incorrect information that could lead you astray.
+The worksheets listed on [the homepage](https://manighahrmani.github.io/sandwich_shop/) are your primary learning resource for Flutter development. Work through these worksheets systematically as they provide the foundation you need to complete the coursework successfully. Refrain from using other online resources such as Stack Overflow, YouTube tutorials, or other websites for this coursework as they may contain outdated or incorrect information that could lead you astray.
 
 ### Tips
 
@@ -269,8 +269,4 @@ git push
 
 If you make a mistake and need to revert to a previous commit, you can view your commit history with `git log --oneline`, find the commit hash where things were working (for example, `abc1234`), and revert to that commit with `git reset --hard abc1234`. If necessary, you can force push with `git push --force`. In extreme cases where your repository is completely broken and unrecoverable, you can start fresh by deleting your forked repository on GitHub (Settings → Danger Zone → Delete this repository), forking the original repository again from [https://github.com/manighahrmani/union_shop](https://github.com/manighahrmani/union_shop), and cloning your fresh fork.
 
-AI tools can are valuable during development, and you are encouraged to use them. However, you must apply the best practices taught in the worksheets, particularly those covered in [Worksheet 6](https://manighahrmani.github.io/sandwich_shop/worksheet-6.html). AI-generated code should be reviewed, understood, and adapted to fit your application properly. Blindly copying AI suggestions without understanding them will likely result in poor code quality and may not meet the requirements. Use AI as a learning aid and coding partner rather than a replacement for your own understanding and decision-making.
-
-## License
-
-This project is created for educational purposes as part of the University of Portsmouth coursework.
+AI tools are valuable during development, and you are encouraged to use them. However, you must apply the best practices taught in the worksheets, particularly those covered in [Worksheet 6](https://manighahrmani.github.io/sandwich_shop/worksheet-6.html). AI-generated code should be reviewed, understood, and adapted to fit your application properly. Blindly copying AI suggestions without understanding them will likely result in poor code quality and may not meet the requirements. Use AI as a learning aid and coding partner rather than a replacement for your own understanding and decision-making.
