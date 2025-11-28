@@ -1,3 +1,6 @@
+# Kiro specs (local development)
+.kiro/
+
 # Miscellaneous
 *.class
 *.log
