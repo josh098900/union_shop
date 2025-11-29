@@ -6,7 +6,6 @@ import 'providers/cart_provider.dart';
 import 'widgets/navbar.dart';
 import 'widgets/footer.dart';
 import 'widgets/quantity_selector.dart';
-import 'widgets/filter_dropdown.dart';
 
 /// Product detail page displaying product information with options to select
 /// size, colour, quantity, and add to cart.
@@ -64,11 +63,64 @@ class _ProductPageState extends State<ProductPage> {
 
   static const Color primaryColor = Color(0xFF4d2963);
 
+  /// Checks if all required options are selected before adding to cart
+  bool get _canAddToCart {
+    // If product has sizes, one must be selected
+    if (_product.sizes.isNotEmpty && _selectedSize == null) {
+      return false;
+    }
+    // If product has colours, one must be selected
+    if (_product.colours.isNotEmpty && _selectedColour == null) {
+      return false;
+    }
+    // Don't allow adding placeholder product
+    if (_product.id == 'placeholder-1') {
+      return false;
+    }
+    return true;
+  }
+
+  /// Gets a message describing what options need to be selected
+  String? get _selectionRequiredMessage {
+    final missing = <String>[];
+    if (_product.sizes.isNotEmpty && _selectedSize == null) {
+      missing.add('size');
+    }
+    if (_product.colours.isNotEmpty && _selectedColour == null) {
+      missing.add('colour');
+    }
+    if (missing.isEmpty) return null;
+    return 'Please select a ${missing.join(' and ')}';
+  }
+
   /// Handles adding the product to cart with selected options.
   /// 
   /// Connects to CartProvider to add the item and shows visual feedback.
   /// Requirements: 13.4, 14.1
   void _handleAddToCart() async {
+    // Validate required options are selected
+    if (!_canAddToCart) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.warning_amber, color: Colors.white),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(_selectionRequiredMessage ?? 'Please select all options'),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.orange[700],
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+      return;
+    }
+
     final cartProvider = context.read<CartProvider>();
     
     // Add item to cart with selected options and quantity (Req 14.1)
@@ -274,10 +326,11 @@ class _ProductPageState extends State<ProductPage> {
 
         // Size dropdown (Req 13.2)
         if (_product.sizes.isNotEmpty) ...[
-          FilterDropdown(
+          _buildOptionDropdown(
             label: 'Size',
             options: _product.sizes,
             selectedValue: _selectedSize,
+            isRequired: true,
             onChanged: (value) {
               setState(() {
                 _selectedSize = value;
@@ -289,10 +342,11 @@ class _ProductPageState extends State<ProductPage> {
 
         // Colour dropdown (Req 13.2)
         if (_product.colours.isNotEmpty) ...[
-          FilterDropdown(
+          _buildOptionDropdown(
             label: 'Colour',
             options: _product.colours,
             selectedValue: _selectedColour,
+            isRequired: true,
             onChanged: (value) {
               setState(() {
                 _selectedColour = value;
@@ -323,14 +377,44 @@ class _ProductPageState extends State<ProductPage> {
 
         const SizedBox(height: 24),
 
+        // Selection required message
+        if (_selectionRequiredMessage != null) ...[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.orange[50],
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.orange[200]!),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.orange[700], size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    _selectionRequiredMessage!,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.orange[800],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
+
         // Add to Cart button (Req 13.4)
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: _handleAddToCart,
+            onPressed: _canAddToCart ? _handleAddToCart : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: primaryColor,
               foregroundColor: Colors.white,
+              disabledBackgroundColor: Colors.grey[300],
+              disabledForegroundColor: Colors.grey[500],
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -342,6 +426,75 @@ class _ProductPageState extends State<ProductPage> {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Builds a dropdown for selecting product options (size, colour)
+  /// Unlike FilterDropdown, this doesn't have an "All" option and requires selection
+  Widget _buildOptionDropdown({
+    required String label,
+    required List<String> options,
+    required String? selectedValue,
+    required ValueChanged<String?> onChanged,
+    bool isRequired = false,
+  }) {
+    final hasError = isRequired && selectedValue == null;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[700],
+                fontSize: 14,
+              ),
+            ),
+            if (isRequired) ...[
+              const SizedBox(width: 4),
+              Text(
+                '*',
+                style: TextStyle(
+                  color: hasError ? Colors.red : Colors.grey[500],
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ],
+        ),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: hasError ? Colors.orange[300]! : Colors.grey[300]!,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: selectedValue,
+              hint: Text(
+                'Select $label',
+                style: TextStyle(color: Colors.grey[500]),
+              ),
+              isExpanded: true,
+              icon: const Icon(Icons.keyboard_arrow_down),
+              items: options.map((option) {
+                return DropdownMenuItem<String>(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList(),
+              onChanged: onChanged,
             ),
           ),
         ),

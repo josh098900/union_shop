@@ -205,56 +205,59 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   // Sample products for the homepage (Requirements 1.2)
+  // Use IDs that match ProductService for proper navigation
   static final List<Product> _sampleProducts = [
     Product(
-      id: '1',
-      title: 'Portsmouth City Magnet',
-      description: 'A beautiful magnet featuring Portsmouth city.',
-      price: 10.00,
+      id: 'prod-8',
+      title: 'Portsmouth Magnet',
+      description: 'Collectible magnet featuring Portsmouth landmarks.',
+      price: 5.00,
       imageUrls: [
         'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282'
       ],
-      sizes: [],
-      colours: [],
+      sizes: ['One Size'],
+      colours: ['Multi'],
       collectionId: 'souvenirs',
       createdAt: DateTime.now(),
     ),
     Product(
-      id: '2',
+      id: 'prod-1',
       title: 'University Hoodie',
-      description: 'Official University of Portsmouth hoodie.',
-      price: 15.00,
+      description: 'Classic university hoodie with embroidered logo.',
+      price: 35.00,
       imageUrls: [
         'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282'
       ],
       sizes: ['S', 'M', 'L', 'XL'],
-      colours: ['Navy', 'Grey'],
+      colours: ['Navy', 'Black', 'Grey'],
       collectionId: 'clothing',
       createdAt: DateTime.now(),
     ),
     Product(
-      id: '3',
+      id: 'prod-10',
       title: 'Portsmouth Postcard Set',
-      description: 'Set of 5 postcards featuring Portsmouth landmarks.',
-      price: 20.00,
+      description: 'Set of 6 postcards featuring campus views.',
+      price: 8.00,
+      salePrice: 6.00,
       imageUrls: [
         'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282'
       ],
-      sizes: [],
-      colours: [],
+      sizes: ['Standard'],
+      colours: ['Multi'],
       collectionId: 'souvenirs',
       createdAt: DateTime.now(),
     ),
     Product(
-      id: '4',
-      title: 'Union Shop Tote Bag',
-      description: 'Eco-friendly tote bag with Union Shop logo.',
-      price: 25.00,
+      id: 'prod-7',
+      title: 'Campus Backpack',
+      description: 'Durable backpack with laptop compartment.',
+      price: 45.00,
+      salePrice: 38.00,
       imageUrls: [
-        'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282'
+        'https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561'
       ],
-      sizes: [],
-      colours: ['Natural', 'Black'],
+      sizes: ['One Size'],
+      colours: ['Black', 'Navy', 'Grey'],
       collectionId: 'accessories',
       createdAt: DateTime.now(),
     ),

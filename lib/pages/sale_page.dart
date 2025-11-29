@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/models/product.dart';
+import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/widgets/navbar.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/widgets/product_card.dart';
@@ -13,81 +14,8 @@ import 'package:union_shop/widgets/product_card.dart';
 class SalePage extends StatelessWidget {
   const SalePage({super.key});
 
-  /// Hardcoded sale product data (Req 8.1)
-  static final List<Product> _saleProducts = [
-    Product(
-      id: 'sale-1',
-      title: 'Campus Jacket',
-      description: 'Lightweight jacket perfect for campus life. Limited time offer!',
-      price: 55.00,
-      salePrice: 45.00,
-      imageUrls: ['https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282'],
-      sizes: ['S', 'M', 'L', 'XL'],
-      colours: ['Black', 'Navy'],
-      collectionId: 'sale',
-      createdAt: DateTime(2025, 3, 5),
-    ),
-    Product(
-      id: 'sale-2',
-      title: 'Varsity Sweatshirt',
-      description: 'Premium sweatshirt with varsity-style lettering.',
-      price: 42.00,
-      salePrice: 35.00,
-      imageUrls: ['https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561'],
-      sizes: ['S', 'M', 'L', 'XL'],
-      colours: ['Grey', 'Navy', 'Black'],
-      collectionId: 'sale',
-      createdAt: DateTime(2025, 3, 15),
-    ),
-    Product(
-      id: 'sale-3',
-      title: 'University Polo Shirt',
-      description: 'Classic polo with embroidered university crest.',
-      price: 28.00,
-      salePrice: 19.99,
-      imageUrls: ['https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282'],
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      colours: ['White', 'Navy', 'Purple'],
-      collectionId: 'sale',
-      createdAt: DateTime(2025, 2, 20),
-    ),
-    Product(
-      id: 'sale-4',
-      title: 'Student Backpack',
-      description: 'Durable backpack with laptop compartment and university branding.',
-      price: 45.00,
-      salePrice: 32.00,
-      imageUrls: ['https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561'],
-      sizes: ['One Size'],
-      colours: ['Black', 'Navy'],
-      collectionId: 'sale',
-      createdAt: DateTime(2025, 1, 10),
-    ),
-    Product(
-      id: 'sale-5',
-      title: 'Portsmouth Hoodie - Limited Edition',
-      description: 'Special edition hoodie with unique design. While stocks last!',
-      price: 48.00,
-      salePrice: 36.00,
-      imageUrls: ['https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282'],
-      sizes: ['S', 'M', 'L', 'XL'],
-      colours: ['Purple', 'Grey'],
-      collectionId: 'sale',
-      createdAt: DateTime(2025, 3, 1),
-    ),
-    Product(
-      id: 'sale-6',
-      title: 'Sports Water Bottle',
-      description: 'Insulated water bottle with university logo.',
-      price: 18.00,
-      salePrice: 12.00,
-      imageUrls: ['https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561'],
-      sizes: ['One Size'],
-      colours: ['Black', 'White', 'Purple'],
-      collectionId: 'sale',
-      createdAt: DateTime(2025, 2, 5),
-    ),
-  ];
+  /// Get sale products from ProductService (Req 8.1)
+  List<Product> get _saleProducts => ProductService().getSaleProducts();
 
   @override
   Widget build(BuildContext context) {
