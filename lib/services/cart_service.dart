@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/cart.dart';
 import '../models/cart_item.dart';
@@ -94,6 +95,8 @@ class CartService {
   Future<Cart> load() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      // Reload to get latest data on web
+      await prefs.reload();
       final cartJson = prefs.getString(_cartKey);
 
       if (cartJson == null || cartJson.isEmpty) {
@@ -103,6 +106,7 @@ class CartService {
       final json = jsonDecode(cartJson) as Map<String, dynamic>;
       return Cart.fromJson(json, _productLookup);
     } catch (e) {
+      debugPrint('CartService.load error: $e');
       // Return empty cart on any error
       return const Cart.empty();
     }
@@ -113,8 +117,12 @@ class CartService {
     try {
       final prefs = await SharedPreferences.getInstance();
       final cartJson = jsonEncode(cart.toJson());
-      return await prefs.setString(_cartKey, cartJson);
+      final result = await prefs.setString(_cartKey, cartJson);
+      // Force a reload to ensure data is persisted on web
+      await prefs.reload();
+      return result;
     } catch (e) {
+      debugPrint('CartService.save error: $e');
       return false;
     }
   }

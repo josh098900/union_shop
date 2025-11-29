@@ -68,14 +68,15 @@ class CartProvider extends ChangeNotifier {
       selectedColour: selectedColour,
       customText: customText,
     );
-    notifyListeners();
 
-    // Persist to storage
+    // Persist to storage first, then notify listeners
     final saved = await _cartService.save(_cart);
     if (!saved) {
       _error = 'Failed to save cart';
-      notifyListeners();
     }
+    
+    // Notify after save completes to ensure UI updates with persisted state
+    notifyListeners();
   }
 
   /// Removes an item from the cart by its ID.
