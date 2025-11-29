@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 /// A reusable navigation bar widget with responsive behaviour.
 /// 
 /// On mobile viewport (< 600px): Shows burger menu that opens a drawer
-/// On desktop viewport (>= 600px): Shows inline navigation links
+/// On tablet viewport (600-1024px): Shows inline navigation links
+/// On desktop viewport (>= 1024px): Shows full inline navigation with expanded spacing
 /// 
-/// Requirements: 2.1, 2.2, 2.3, 2.5
+/// Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 10.1, 16.1, 16.2, 16.3, 16.4
 class Navbar extends StatelessWidget {
   /// Optional callback for search icon tap
   final VoidCallback? onSearchTap;
@@ -28,10 +29,18 @@ class Navbar extends StatelessWidget {
   
   static const Color primaryColor = Color(0xFF4d2963);
   
+  /// Mobile breakpoint - single column, burger menu (Req 16.1)
   static const double mobileBreakpoint = 600.0;
+  
+  /// Tablet breakpoint - inline nav with compact spacing (Req 16.2)
+  static const double tabletBreakpoint = 1024.0;
 
   void _navigateToHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+  }
+
+  void _navigateToSearch(BuildContext context) {
+    Navigator.pushNamed(context, '/search');
   }
 
   void _openDrawer(BuildContext context) {
@@ -87,47 +96,71 @@ class Navbar extends StatelessWidget {
                   LayoutBuilder(
                     builder: (context, constraints) {
                       final screenWidth = MediaQuery.of(context).size.width;
-                      final isDesktop = screenWidth >= mobileBreakpoint;
+                      final isMobile = screenWidth < mobileBreakpoint;
+                      final isTablet = screenWidth >= mobileBreakpoint && screenWidth < tabletBreakpoint;
+                      final isDesktop = screenWidth >= tabletBreakpoint;
+                      final showInlineNav = !isMobile;
+                      
+                      // Responsive spacing (Req 16.2, 16.3)
+                      final navLinkPadding = isDesktop ? 12.0 : 8.0;
                       
                       return ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 600),
+                        constraints: const BoxConstraints(maxWidth: 700),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // Desktop inline navigation (Req 2.5)
-                            if (isDesktop) ...[
+                            // Inline navigation for tablet and desktop (Req 2.5, 16.2, 16.3)
+                            if (showInlineNav) ...[
                               _NavLink(
                                 label: 'Home',
                                 onTap: () => _navigateToHome(context),
+                                padding: navLinkPadding,
+                                compact: isTablet,
                               ),
                               _NavLink(
                                 label: 'Collections',
                                 onTap: () => Navigator.pushNamed(context, '/collections'),
+                                padding: navLinkPadding,
+                                compact: isTablet,
+                              ),
+                              _NavLink(
+                                label: 'Sale',
+                                onTap: () => Navigator.pushNamed(context, '/sale'),
+                                padding: navLinkPadding,
+                                compact: isTablet,
+                              ),
+                              _NavLink(
+                                label: 'Print Shack',
+                                onTap: () => Navigator.pushNamed(context, '/print-shack'),
+                                padding: navLinkPadding,
+                                compact: isTablet,
                               ),
                               _NavLink(
                                 label: 'About',
                                 onTap: () => Navigator.pushNamed(context, '/about'),
+                                padding: navLinkPadding,
+                                compact: isTablet,
                               ),
-                              const SizedBox(width: 8),
+                              SizedBox(width: isDesktop ? 8 : 4),
                             ],
                             // Icons (Req 2.2)
                             _NavIconButton(
                               icon: Icons.search,
-                              onPressed: onSearchTap,
+                              onPressed: onSearchTap ?? () => _navigateToSearch(context),
                               tooltip: 'Search',
                             ),
                             _NavIconButton(
                               icon: Icons.person_outline,
-                              onPressed: onAccountTap,
+                              onPressed: onAccountTap ?? () => Navigator.pushNamed(context, '/account'),
                               tooltip: 'Account',
                             ),
                             _NavIconButton(
                               icon: Icons.shopping_bag_outlined,
-                              onPressed: onCartTap,
+                              onPressed: onCartTap ?? () => Navigator.pushNamed(context, '/cart'),
                               tooltip: 'Cart',
                             ),
-                            // Menu icon - only on mobile (Req 2.3)
-                            if (!isDesktop)
+                            // Menu icon - only on mobile (Req 2.3, 16.1)
+                            if (isMobile)
                               _NavIconButton(
                                 icon: Icons.menu,
                                 onPressed: () => _openDrawer(context),
@@ -181,13 +214,18 @@ class _NavIconButton extends StatelessWidget {
 }
 
 /// Internal widget for desktop navigation links
+/// Supports responsive padding and compact mode for tablet (Req 16.2, 16.3)
 class _NavLink extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
+  final double padding;
+  final bool compact;
 
   const _NavLink({
     required this.label,
     required this.onTap,
+    this.padding = 12.0,
+    this.compact = false,
   });
 
   @override
@@ -196,12 +234,13 @@ class _NavLink extends StatelessWidget {
       onPressed: onTap,
       style: TextButton.styleFrom(
         foregroundColor: Colors.grey[700],
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: EdgeInsets.symmetric(horizontal: padding),
+        minimumSize: compact ? const Size(0, 36) : null,
       ),
       child: Text(
         label,
-        style: const TextStyle(
-          fontSize: 14,
+        style: TextStyle(
+          fontSize: compact ? 13 : 14,
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -214,7 +253,7 @@ class _NavLink extends StatelessWidget {
 /// Should be used with Scaffold's endDrawer property.
 /// Menu items close the drawer when tapped (Req 2.4).
 /// 
-/// Requirements: 2.3, 2.4
+/// Requirements: 2.3, 2.4, 10.1
 class NavbarDrawer extends StatelessWidget {
   const NavbarDrawer({super.key});
 
@@ -248,7 +287,7 @@ class NavbarDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            // Menu items (Req 2.3)
+            // Menu items (Req 2.3, 10.1)
             _DrawerMenuItem(
               icon: Icons.home,
               label: 'Home',
@@ -260,9 +299,26 @@ class NavbarDrawer extends StatelessWidget {
               onTap: () => _navigateAndClose(context, '/collections'),
             ),
             _DrawerMenuItem(
+              icon: Icons.local_offer,
+              label: 'Sale',
+              onTap: () => _navigateAndClose(context, '/sale'),
+            ),
+            _DrawerMenuItem(
               icon: Icons.info_outline,
               label: 'About',
               onTap: () => _navigateAndClose(context, '/about'),
+            ),
+            const Divider(),
+            _DrawerMenuItem(
+              icon: Icons.print,
+              label: 'Print Shack',
+              onTap: () => _navigateAndClose(context, '/print-shack'),
+            ),
+            const Divider(),
+            _DrawerMenuItem(
+              icon: Icons.search,
+              label: 'Search',
+              onTap: () => _navigateAndClose(context, '/search'),
             ),
             _DrawerMenuItem(
               icon: Icons.shopping_cart,
